@@ -1,0 +1,10 @@
+set nocompatible
+set ts=4 sw=4 sts=0
+set autoindent
+set number
+
+syntax on
+set wrapscan
+set hlsearch
+set showmatch
+

@@ -1,0 +1,265 @@
+set ruler
+set number
+set relativenumber
+set title
+set go=tC
+set cursorline
+set whichwrap=<,>,[,]
+set showmatch
+"set expandtab
+set smartindent
+set autoindent
+set cindent
+set nrformats+=alpha,octal,hex
+set tabstop=4
+set shiftwidth=4
+set textwidth=70
+set synmaxcol=100
+set expandtab
+set breakindent
+set wrap
+"set emoji
+set ttyfast
+set spell
+set spelllang=en,cjk
+set fileencoding=utf-8
+scriptencoding utf-8
+
+noremap j gj
+noremap k gk
+noremap <Down> gj
+noremap <Up> gk
+noremap gn <C-u>:tabnew<CR>
+noremap gs :Scratch<CR>
+set clipboard=unnamed
+
+set directory=$vim/backup
+set backupdir=$vim/backup
+set undodir=$vim/undo
+
+set runtimepath^=$vim/plugins/dein.vim
+
+call dein#begin(expand('~/.cache/dein'))
+
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/vimfiler')
+"call dein#add('Shougo/vimproc')
+call dein#add('tomtom/tcomment_vim')
+call dein#add('fuenor/qfixhowm')
+call dein#add('mattn/emmet-vim')
+call dein#add('jcf/vim-latex')
+call dein#add('cohama/lexima.vim')
+call dein#add('Shougo/vimshell.vim')
+"call dein#add('fatih/vim-go.vim')
+"call dein#add('yggdroot/indentLine')
+call dein#add('endel/vim-github-colorscheme')
+call dein#add('itchyny/lightline.vim')
+call dein#add('itchyny/vim-cursorword')
+call dein#add('vim-scripts/gruvbox')
+call dein#add('godlygeek/tabular')
+call dein#add('vim-scripts/Align')
+call dein#add('kmnk/vim-unite-giti.git')
+call dein#add('tpope/vim-fugitive')
+call dein#add('scrooloose/nerdtree')
+call dein#add('cocopon/iceberg.vim')
+call dein#add('maksimr/vim-jsbeautify')
+call dein#add('joonty/vim-do')
+
+call dein#end()
+
+filetype plugin indent on
+
+" Unite.vim
+"nnoremap [unite]
+nmap ,u	[unite]
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+nnoremap <silent> [unite]f :<C-u>Unite file<CR>
+nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
+"giti
+nnoremap <silent> [unite]gl :<C-u>Unite giti/log<CR>
+nnoremap <silent> [unite]gr :<C-u>Unite giti/remote<CR>
+nnoremap <silent> [unite]gs :<C-u>Unite giti/status<CR>
+nnoremap <silent> [unite]gg :<C-u>Unite giti/grep<CR>
+
+"" vimfiler
+nmap ,n [vimfiler]
+nmap <silent> [vimfiler]c :<C-u>VimFilerExplorer<CR>
+let g:vimfiler_as_default_explorer = 1
+
+" NeoComplete
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_camel_case_completion = 1
+let g:neocomplete#enable_underbar_completion = 1
+let g:neocomplete#enable_min_syntax_length = 5
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ neocomplete#start_manual_complete()
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+" indentLine
+let g:indentLine_color_term = 111
+let g:indentLine_color_gui = '#708090'
+let g:indentLine_char = '|'
+
+" vim-latex
+" --
+" TeX Settings
+" \ll: platex
+" \lv: dviview
+"""
+filetype plugin on
+set shellslash
+filetype indent on
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_CompileRule_dvi = 'platex --interaction=nonstopmode $*'
+let g:Tex_CompileRule_ps = 'dvips -Ppdf -interaction=nonstopmode -o $*.ps $*.dvi'
+let g:Tex_CompileRule_pdf = 'dvipdfmx -I 24 -interaction=nonstopmode $* -o $*.pdf'
+let g:Tex_ViewRule_dvi = 'C:/w32tex/dviout/dviout.exe'
+let g:Tex_ViewRule_pdf = 'C:\Program Files\SumatraPDF\SumatraPDF.exe -reuse-instance'
+let g:Tex_FormatDependency_pdf = 'dvi'
+let g:Tex_MultipleCompileFormats = 'dvi,aux'
+
+function! GeneratePdfFromTex()
+	call Tex_RunLaTeX()
+	call GeneratePdfFromDvi()
+endfunction
+" Generate PDF file from DVI file
+function! GeneratePdfFromDvi()
+	let l:current_file_name=expand('%:t:r') " Get file name from buffer and truncate extension.
+	execute "!dvipdfmx -I 24 " . l:current_file_name
+endfunction
+nmap <Leader>ld :call GeneratePdfFromDvi()<CR>
+nmap <Leader>lp :call GeneratePdfFromTex()<CR>
+
+
+" qfixhowm
+let QFixHowm_Key	= 'g'
+let howm_dir		= '~/howm'
+let howm_filename	= '%Y/%m/%Y%m%d-%H%M%S.txt'
+let howm_fileencoding	= 'utf-8'
+let howm_fileformat	= 'dos'
+let QFixHowm_FileType	= 'qfix_memo'
+let timeoutlen		= 3500
+let QFixHowm_MenuPreview	= 1
+let QFixHowm_MenuCalendar	= 0
+let QFixHowm_MenuPreviewEnable	= 0
+let HowmHtml_CodeHighlight      = 1
+"let QFixHowm_OpenURIcmd = '!start "C:/Program Files (x86)/Mozilla Firefox/firefox.exe" %s'
+let QFixHowm_Wiki = 1
+let QFixHowm_WikiDir = 'wiki'
+"let mygrepprg = 'C:/MinGW/msys/1.0/bin/grep.exe'
+"let QFixHowm_ScheduleSearchDir = 
+
+"新規エントリのテンプレート
+"%TAG%はQFixHowm_DefaultTagに変換されます。
+let QFixHowm_Template = [
+  \"=%TAG% report",
+  \"%DATE%",
+  \""
+\]
+let QFixHowm_DefaultTag = ''"
+
+nmap g,	[qfixhowm]
+" Insert date
+nmap [qfixhowm]d :<C-u>call qfixmemo#InsertDate('Date')<CR>
+" Insert date - time
+nmap [qfixhowm]t :<C-u>call qfixmemo#InsertDate('Time')<CR>
+" Insert check list
+"nmap [qfixhowm]cl o{ } 
+
+"" emmet-vim
+"let g:user_emmet_install_global = 0
+"autocmd FileType html,css EmmetInstall
+
+"" lexima.vim
+call lexima#add_rule({'char': '（', 'input': '（', 'input_after': '）'})
+"call lexima#add_rule({'char': '<', 'input': '<', 'input_after': '>'})
+
+au BufRead *.tex match Question /には，\|では，\|が，\|と，/
+
+"" Markdown
+"let g:vim_markdown_liquid=1
+"let g:vim_markdown_frontmatter=1
+"let g:vim_markdown_math=1
+"au BufRead,BufNewFile *.{txt,text} set filetype=markdown
+
+"VimShell
+nmap ,v	[vimshell]
+nnoremap <silent> [vimshell]s :<C-u>VimShell<CR>
+let $PATH="C:/MinGW/bin".$PATH
+
+"lightline
+let g:lightline = {
+			\ 'colorscheme': 'PaperColor'
+			\}
+
+" indenxLine
+"" default indentLine is too slow (specifically on LaTeX)
+let g:indentLine_faster = 1
+
+" format json
+nnoremap <Leader>jf !python -m json.tool<CR>
+
+""NERDTree
+"nmap ,n [nerdtree]
+"nmap [nerdtree]c :NERDTreeCWD<CR>
+
+"tab completion
+"Use TAB to complete when typing words, else inserts TABs as usual.
+"Uses dictionary and source files to find matching words to complete.
+
+"See help completion for source,
+"Note: usual completion is on <C-n> but more trouble to press all the time.
+"Never type the same word twice and maybe learn a new spellings!
+"Use the Linux dictionary when spelling is in doubt.
+"Window users can copy the file to their machine.
+function! Tab_Or_Complete()
+  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+    return "\<C-N>"
+  else
+    return "\<Tab>"
+  endif
+endfunction
+:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+:set dictionary="/usr/dict/words"
+
+" Random String (its length is 8) Generator
+function! Get_Random_String()
+    return sha256(reltimestr(reltime()))[:7]
+endfunction
+inoremap <C-R> <C-r>=Get_Random_String()<CR>
+
+" jq
+command! -nargs=? Jq call s:Jq(<f-args>)
+function! s:Jq(...)
+    if 0 == a:0
+        let l:arg = "."
+    else
+        let l:arg = a:1
+    endif
+    execute "%! jq \"" . l:arg . "\""
+endfunction
+
+" create new cmd.exe in background
+map <silent> <M-t> :!start cmd.exe<CR>
+map <silent> <M-e> :!start explorer .<CR>
+
