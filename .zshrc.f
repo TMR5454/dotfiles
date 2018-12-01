@@ -186,6 +186,6 @@ alias f='firefox&'
 # go to desktop
 if [ "$( uname -o )" = 'Cygwin' ]; then
   # Is not changed home directory for some reason, when login shell is Zsh.
-  alias cdd="cd '/cygdrive/c/Documents and Settings/$USER/Desktop'"
-  alias ccd="cd '/cygdrive/c/Documents and Settings/$USER/Desktop'"
+  alias cdd="cd '/cygdrive/c/Users/$USER/Desktop'"
+  alias ccd="cd '/cygdrive/c/Users/$USER/Desktop'"
 fi
