@@ -110,7 +110,7 @@ setopt auto_menu
 # カッコの対応などを自動的に補完
 setopt auto_param_keys
 # カーソル位置は保持したままファイル名一覧を順次その場で表示
-setopt always_last_prompt 
+setopt always_last_prompt
 ## カーソル位置で補完する。
 setopt complete_in_word
 ## globを展開しないで候補の一覧から補完する。
@@ -140,7 +140,7 @@ watch="all"
 #log
 
 setopt ignore_eof
- 
+
 WORDCHARS=${WORDCHARS:s,/,,}
 WORDCHARS="${WORDCHARS}|"
 
@@ -162,7 +162,6 @@ alias mv="mv -i"
 alias e='emacs -reverse'
 alias l='ls'
 alias s='ls'
-alias sl='ls'
 alias clean='rm -f *~'
 
 alias grep='grep --color=auto'
@@ -175,7 +174,7 @@ alias less='less -R'
 # installation of packages available from the repository
 #if [[ -x /usr/lib/command-not-found ]] ; then
 #    function command_not_found_handler() {
-#	/usr/lib/command-not-found --no-failure-msg -- $1
+#       /usr/lib/command-not-found --no-failure-msg -- $1
 #    }
 #fi
 
@@ -186,6 +185,16 @@ alias f='firefox&'
 # go to desktop
 if [ "$( uname -o )" = 'Cygwin' ]; then
   # Is not changed home directory for some reason, when login shell is Zsh.
-  alias cdd="cd '/cygdrive/c/Users/$USER/Desktop'"
-  alias ccd="cd '/cygdrive/c/Users/$USER/Desktop'"
+  alias cdd="cd '/cygdrive/c/Documents and Settings/$USER/Desktop'"
+  alias ccd="cd '/cygdrive/c/Documents and Settings/$USER/Desktop'"
 fi
+
+# For WSL
+if [[ "$( uname -a )" =~ 'Microsoft' ]] ; then
+  # Is not changed home directory for some reason, when login shell is Zsh.
+  export WINDOWS_USER="$(/mnt/c/Windows/System32/cmd.exe /c 'echo %USERNAME%' | sed -e 's/\r//g')"
+  alias cdd="cd '/mnt/c/Users/${WINDOWS_USER}/Desktop'"
+  alias ccd="cd '/mnt/c/Users/${WINDOWS_USER}/Desktop'"
+fi
+
+
