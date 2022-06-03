@@ -1,4 +1,0 @@
-#!/bin/sh
-
-$(/mnt/c/Program\ Files/gPad/gPad.exe  $@)&
-

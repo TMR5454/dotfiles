@@ -1,0 +1,4 @@
+#!/bin/sh
+
+$( find . -name $1 | xargs /mnt/c/Program\ Files/gPad/gPad.exe ) &
+

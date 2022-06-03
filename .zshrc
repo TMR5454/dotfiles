@@ -2,7 +2,7 @@
 # .zshrc
 #
 
-export LANG=ja_JP.UTF-8
+#export LANG=ja_JP.UTF-8
 #export LANG=C
 
 autoload -U colors
@@ -169,6 +169,8 @@ alias grep='grep --color=auto'
 # 色付きのless
 alias less='less -R'
 
+# for clipboard copy
+alias pbcopy='xsel --clipboard --input'
 
 # This script will look-up command in the database and suggest
 # installation of packages available from the repository
@@ -177,9 +179,6 @@ alias less='less -R'
 #       /usr/lib/command-not-found --no-failure-msg -- $1
 #    }
 #fi
-
-#add by TMR
-alias f='firefox&'
 
 # For Cygwin.
 # go to desktop
@@ -190,7 +189,7 @@ if [ "$( uname -o )" = 'Cygwin' ]; then
 fi
 
 # For WSL
-if [[ "$( uname -a )" =~ 'Microsoft' ]] ; then
+if [[ "$( uname -a )" =~ '[Mm]icrosoft' ]] ; then
   # Is not changed home directory for some reason, when login shell is Zsh.
   export WINDOWS_USER="$(/mnt/c/Windows/System32/cmd.exe /c 'echo %USERNAME%' | sed -e 's/\r//g')"
   alias cdd="cd '/mnt/c/Users/${WINDOWS_USER}/Desktop'"
