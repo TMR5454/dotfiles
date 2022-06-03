@@ -145,7 +145,7 @@ WORDCHARS=${WORDCHARS:s,/,,}
 WORDCHARS="${WORDCHARS}|"
 
 
-
+set bell-style none
 
 
 ### alias
@@ -194,6 +194,7 @@ if [[ "$( uname -a )" =~ '[Mm]icrosoft' ]] ; then
   export WINDOWS_USER="$(/mnt/c/Windows/System32/cmd.exe /c 'echo %USERNAME%' | sed -e 's/\r//g')"
   alias cdd="cd '/mnt/c/Users/${WINDOWS_USER}/Desktop'"
   alias ccd="cd '/mnt/c/Users/${WINDOWS_USER}/Desktop'"
+  alias pbcopy='clip.exe'
 fi
 
 
